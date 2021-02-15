@@ -6,9 +6,6 @@ import FieldWrapper from '../../components/field-wrapper';
 
 const block = 'jet-forms/datetime-field';
 
-window.jetFormBuilderBlockCallbacks = window.jetFormBuilderBlockCallbacks || {};
-window.jetFormBuilderBlockCallbacks[ block ] = window.jetFormBuilderBlockCallbacks[ block ] || {};
-
 const { __ } = wp.i18n;
 
 const {
@@ -40,70 +37,61 @@ const {
 const keyControls = block + '-controls-edit';
 const keyGeneral = block + '-general-edit';
 
-window.jetFormBuilderBlockCallbacks[ block ].edit = class DateEdit extends wp.element.Component {
-	render() {
-		const props = this.props;
-		const attributes = props.attributes;
-		const hasToolbar = Boolean( window.jetFormBuilderControls.toolbar[ block ] && window.jetFormBuilderControls.toolbar[ block ].length );
+export default function DateTimeEdit( props ) {
+	const {
+		setAttributes,
+		controls,
+		attributes,
+		isSelected
+	} = props;
 
-		return [
-			hasToolbar && (
-				<BlockControls key={ keyControls + '-block' }>
-					<JetFormToolbar
-						values={ attributes }
-						controls={ window.jetFormBuilderControls.toolbar[ block ] }
-						onChange={ ( newValues ) => {
-							props.setAttributes( newValues );
-						} }
-					/>
-				</BlockControls>
-			),
-			props.isSelected && (
-				<InspectorControls
-					key={ keyControls }
-				>
-					{ window.jetFormBuilderControls.general[ block ] && window.jetFormBuilderControls.general[ block ].length &&
-					<JetFormGeneral
-						key={ keyGeneral }
-						values={ attributes }
-						controls={ window.jetFormBuilderControls.general[ block ] }
-						onChange={ ( newValues ) => {
-							props.setAttributes( newValues );
-						} }
-					/> }
-					<PanelBody
-						title={ __( 'Field Settings' ) }
-					>
-						<ToggleControl
-							key='is_timestamp'
-							label={ __( 'Is Timestamp' ) }
-							checked={ attributes.is_timestamp }
-							help={ Tools.getHelpMessage( window.jetFormDatetimeFieldData, 'is_timestamp' ) }
-							onChange={ ( newValue ) => {
-								props.setAttributes( { is_timestamp: Boolean( newValue ) } );
-							} }
-						/>
-					</PanelBody>
-					{ window.jetFormBuilderControls.advanced[ block ] && window.jetFormBuilderControls.advanced[ block ].length &&
-					<JetFormAdvanced
-						values={ attributes }
-						controls={ window.jetFormBuilderControls.advanced[ block ] }
-						onChange={ ( newValues ) => {
-							props.setAttributes( newValues );
-						} }
-					/> }
-				</InspectorControls>
-			),
-			<FieldWrapper
-				block={ block }
-				attributes={ attributes }
+	return [
+		<BlockControls key={ keyControls + '-block' }>
+			<JetFormToolbar
+				values={ attributes }
+				controls={ controls.toolbar }
+				onChange={ setAttributes }
+			/>
+		</BlockControls>,
+		isSelected && <InspectorControls
+			key={ keyControls }
+		>
+			<JetFormGeneral
+				key={ keyGeneral }
+				values={ attributes }
+				controls={ controls.general }
+				onChange={ setAttributes }
+			/>
+			<PanelBody
+				title={ __( 'Field Settings' ) }
 			>
-				<TextControl
-					onChange={ () => {} }
-					key={ `place_holder_block_${ block }` }
-					placeholder={ 'Input type="datetime-local"' }
+				<ToggleControl
+					key='is_timestamp'
+					label={ __( 'Is Timestamp' ) }
+					checked={ attributes.is_timestamp }
+					help={ Tools.getHelpMessage( window.jetFormDatetimeFieldData, 'is_timestamp' ) }
+					onChange={ ( newValue ) => {
+						setAttributes( { is_timestamp: Boolean( newValue ) } );
+					} }
 				/>
-			</FieldWrapper>
-		];
-	}
+			</PanelBody>
+			<JetFormAdvanced
+				values={ attributes }
+				controls={ controls.advanced }
+				onChange={ setAttributes }
+			/>
+		</InspectorControls>,
+		<FieldWrapper
+			block={ block }
+			attributes={ attributes }
+			key={ `wrapper-${ block }` }
+		>
+			<TextControl
+				onChange={ () => {
+				} }
+				key={ `place_holder_block_${ block }` }
+				placeholder={ 'Input type="datetime-local"' }
+			/>
+		</FieldWrapper>
+	];
 }

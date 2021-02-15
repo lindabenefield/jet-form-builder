@@ -45,7 +45,7 @@ const keyGeneral = block + '-general-edit';
 
 const localizeData = window.JetFormTextFieldData;
 
-window.jetFormBuilderBlockCallbacks[ block ].edit = function TextEdit( props ) {
+export default function TextEdit( props ) {
 	const attributes = props.attributes;
 
 	const changeNumberValue = ( key, newValue ) => {

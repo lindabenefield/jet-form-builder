@@ -1,3 +1,4 @@
+
 import Editor from './editor';
 import ArgsMeta from './meta/arguments';
 import ActionsMeta from './meta/actions';
@@ -6,7 +7,6 @@ import MessagesMeta from './meta/messages';
 import Captcha from "./meta/captcha";
 import Gateways from "./meta/gateways";
 
-import './blocks/form-fields';
 import './form-actions/send-email';
 import './form-actions/insert-post';
 import './form-actions/register-user';
@@ -20,17 +20,6 @@ import './form-actions/getresponse';
 import './form-actions/activecampaign';
 import { event } from "./helpers/tools";
 
-const {
-	registerBlockType
-} = wp.blocks;
-
-const {
-	G,
-	Path,
-	Circle,
-	Rect,
-	SVG
-} = wp.components;
 
 window.jetFormBuilderControls = {
 	toolbar: {},
@@ -40,7 +29,9 @@ window.jetFormBuilderControls = {
 
 event( 'jet-form-builder-initialize' )();
 
-if ( window.jetFormBuilderBlocks && window.jetFormBuilderBlocks.length ) {
+import './blocks/blocks-manager';
+
+/*if ( window.jetFormBuilderBlocks && window.jetFormBuilderBlocks.length ) {
 
 	window.jetFormBuilderBlocks.forEach( function ( blockData ) {
 
@@ -58,7 +49,7 @@ if ( window.jetFormBuilderBlocks && window.jetFormBuilderBlocks.length ) {
 				window.jetFormBuilderControls.advanced[ blockData.blockName ] = blockData.controls.advanced;
 			}
 
-			registerBlockType( blockData.blockName, {
+			/!*registerBlockType( blockData.blockName, {
 				title: blockData.title,
 				icon: <span dangerouslySetInnerHTML={ { __html: blockData.icon } }></span>,
 				category: 'jet-form-builder-fields',
@@ -71,13 +62,13 @@ if ( window.jetFormBuilderBlocks && window.jetFormBuilderBlocks.length ) {
 				},
 				edit: window.jetFormBuilderBlockCallbacks[ blockData.blockName ].edit,
 				save: window.jetFormBuilderBlockCallbacks[ blockData.blockName ].save,
-			} );
+			} );*!/
 
 		}
 
 	} );
 
-}
+}*/
 
 window.jetFormActionTypes.forEach( function ( action, index ) {
 	if ( window.jetFormDefaultActions && window.jetFormDefaultActions[ action.id ] ) {

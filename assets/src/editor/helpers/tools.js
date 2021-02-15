@@ -1,4 +1,5 @@
 import { saveGlobalComponent } from "../components/manager";
+import { useFormArgs } from "./hooks-helper";
 
 const { __ } = wp.i18n;
 
@@ -14,11 +15,13 @@ class Tools {
 		}
 	}
 
-	static getLabel( meta, attrs ) {
+	static getLabel( attrs ) {
 		const label = {};
 		label.name = attrs.label;
+		const [ args ] = useFormArgs();
+
 		if ( attrs.required ) {
-			label.mark = JSON.parse( meta._jf_args ).required_mark || '';
+			label.mark = args.required_mark || '';
 		}
 		return label;
 	}

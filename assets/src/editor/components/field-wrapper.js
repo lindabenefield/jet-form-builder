@@ -5,15 +5,7 @@ export default function FieldWrapper( { attributes, block, children, wrapClasses
 		BaseControl,
 	} = wp.components;
 
-	const {
-		useSelect,
-	} = wp.data;
-
-	const meta = useSelect( ( select ) => {
-		return select( 'core/editor' ).getEditedPostAttribute( 'meta' ) || {};
-	} );
-
-	const label = Tools.getLabel( meta, attributes );
+	const label = Tools.getLabel( attributes );
 
 	return (
 		<BaseControl key={ `place_holder_block_${ block }_label` }

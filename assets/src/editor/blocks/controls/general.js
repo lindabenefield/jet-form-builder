@@ -1,7 +1,6 @@
 import FieldWithPreset from "../../components/field-with-preset";
 import DynamicPreset from "../../components/presets/dynamic-preset";
 import { saveGlobalComponent } from "../../components/manager";
-import WrapperRequiredControl from "../../components/wrapper-required-control";
 
 /**
  * WordPress dependencies
@@ -59,6 +58,7 @@ const JetFormGeneral = class extends wp.element.Component {
 					case 'dynamic_text':
 						return <FieldWithPreset
 							ModalEditor={ ( { actionClick, onRequestClose } ) => <DynamicPreset
+								key={ `dynamic_text_${ data.key }` }
 								value={ result[ data.key ] }
 								isSaveAction={ actionClick }
 								onSavePreset={ newVal => {

@@ -1,0 +1,48 @@
+{
+	"title": "Submit field",
+	"attributes": {},
+	"global": {
+		"label": {
+			"type": "string",
+			"default": "Submit",
+			"general": {
+				"type": "text",
+				"label": "Field Label"
+			}
+		},
+		"name": {
+			"type": "string",
+			"default": "Submit",
+			"general": {
+				"type": "text",
+				"label": "Field Name",
+				"show": false
+			}
+		},
+		"add_prev": {
+			"type": "boolean",
+			"default": false,
+			"advanced": {
+				"type": "toggle",
+				"label": "Add Prev Page Button"
+			}
+		},
+		"prev_label": {
+			"type": "string",
+			"default": "",
+			"advanced": {
+				"type": "text",
+				"label": "Prev Page Button Label",
+				"condition": "add_prev"
+			}
+		},
+		"class_name": {
+			"type": "string",
+			"default": "",
+			"advanced": {
+				"type": "text",
+				"label": "CSS Class Name"
+			}
+		}
+	}
+}

@@ -38,58 +38,46 @@ const {
 const keyControls = () => block + '-controls-edit';
 const keyGeneral = block + '-general-edit';
 
-window.jetFormBuilderBlockCallbacks[ block ].edit = class SubmitEdit extends wp.element.Component {
-	render() {
-		const props = this.props;
-		const attributes = props.attributes;
-		const hasToolbar = Boolean( window.jetFormBuilderControls.toolbar[ block ] && window.jetFormBuilderControls.toolbar[ block ].length );
+export default function SubmitEdit( props ) {
+	const { attributes, setAttributes, controls, isSelected } = props;
 
-		return [
-			hasToolbar && (
-				<BlockControls key={ keyControls() }>
-					<JetFormToolbar
-						values={ attributes }
-						controls={ window.jetFormBuilderControls.toolbar[ block ] }
-						onChange={ ( newValues ) => {
-							props.setAttributes( newValues );
-						} }
-					/>
-				</BlockControls>
-			),
-			props.isSelected && (
-				<InspectorControls
-					key={ 'inspector' }
-				>
-					{ window.jetFormBuilderControls.general[ block ] && window.jetFormBuilderControls.general[ block ].length &&
-					<JetFormGeneral
-						key={ keyGeneral }
-						values={ attributes }
-						controls={ window.jetFormBuilderControls.general[ block ] }
-						onChange={ ( newValues ) => {
-							props.setAttributes( newValues );
-						} }
-					/> }
-
-					{ window.jetFormBuilderControls.advanced[ block ] && window.jetFormBuilderControls.advanced[ block ].length &&
-					<JetFormAdvanced
-						values={ attributes }
-						controls={ window.jetFormBuilderControls.advanced[ block ] }
-						onChange={ ( newValues ) => {
-							props.setAttributes( newValues );
-						} }
-					/> }
-				</InspectorControls>
-			),
-
-			<div className="jet-form-builder__submit-wrap">
-				<Button
-					key={ `place_holder_block_${ block }` }
-					isPrimary
-					className={ 'jet-form-builder__submit' }
-				>
-					{ attributes.label }
-				</Button>
-			</div>
-		];
-	}
+	return [
+		<BlockControls key={ keyControls() }>
+			<JetFormToolbar
+				values={ attributes }
+				controls={ controls.toolbar }
+				onChange={ ( newValues ) => {
+					setAttributes( newValues );
+				} }
+			/>
+		</BlockControls>,
+		isSelected && <InspectorControls
+			key={ 'inspector' }
+		>
+			<JetFormGeneral
+				key={ keyGeneral }
+				values={ attributes }
+				controls={ controls.general }
+				onChange={ ( newValues ) => {
+					setAttributes( newValues );
+				} }
+			/>
+			<JetFormAdvanced
+				values={ attributes }
+				controls={ controls.advanced }
+				onChange={ ( newValues ) => {
+					setAttributes( newValues );
+				} }
+			/>
+		</InspectorControls>,
+		<div className="jet-form-builder__submit-wrap" key={ 'jet-form-builder__submit-wrap' }>
+			<Button
+				key={ `place_holder_block_${ block }` }
+				isPrimary
+				className={ 'jet-form-builder__submit' }
+			>
+				{ attributes.label }
+			</Button>
+		</div>
+	];
 }

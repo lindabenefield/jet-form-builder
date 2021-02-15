@@ -1,14 +1,10 @@
 import JetFormToolbar from '../controls/toolbar';
 import JetFormGeneral from '../controls/general';
 import JetFormAdvanced from '../controls/advanced';
-import JetFieldPlaceholder from '../controls/placeholder';
 import Tools from "../../helpers/tools";
 import FieldWrapper from "../../components/field-wrapper";
 
 const block = 'jet-forms/calculated-field';
-
-window.jetFormBuilderBlockCallbacks = window.jetFormBuilderBlockCallbacks || {};
-window.jetFormBuilderBlockCallbacks[ block ] = window.jetFormBuilderBlockCallbacks[ block ] || {};
 
 const { __ } = wp.i18n;
 
@@ -46,12 +42,11 @@ const keyControls = block + '-controls-edit';
 const keyPlaceHolder = block + '-placeholder-edit';
 const keyGeneral = block + '-general-edit';
 
-window.jetFormBuilderBlockCallbacks[ block ].edit = class CalculatedEdit extends wp.element.Component {
+class CalculatedEdit extends wp.element.Component {
 
 	constructor( props ) {
 		super( props );
 
-		this.data = window.jetFormCalculatedFieldData;
 		this.state = { showMacrosPopover: false };
 	}
 
@@ -196,3 +191,5 @@ window.jetFormBuilderBlockCallbacks[ block ].edit = class CalculatedEdit extends
 		];
 	}
 }
+
+window.jetFormBuilderBlockCallbacks[ block ].edit = CalculatedEdit;

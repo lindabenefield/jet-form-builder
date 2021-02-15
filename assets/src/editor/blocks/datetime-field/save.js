@@ -2,6 +2,6 @@ const block = 'jet-forms/datetime-field';
 window.jetFormBuilderBlockCallbacks = window.jetFormBuilderBlockCallbacks || {};
 window.jetFormBuilderBlockCallbacks[ block ] = window.jetFormBuilderBlockCallbacks[ block ] || {};
 
-window.jetFormBuilderBlockCallbacks[ block ].save = function ( props ) {
+export default function saveField( props ) {
 	return null;
 };
