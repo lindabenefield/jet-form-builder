@@ -48,7 +48,7 @@ const keyControls = block + '-controls-edit';
 const keyPlaceHolder = block + '-placeholder-edit';
 const keyGeneral = block + '-general-edit';
 
-window.jetFormBuilderBlockCallbacks[ block ].edit = class DateEdit extends wp.element.Component {
+export default class DateEdit extends wp.element.Component {
 	render() {
 		const props = this.props;
 		const attributes = props.attributes;

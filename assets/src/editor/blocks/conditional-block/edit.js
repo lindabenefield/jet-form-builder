@@ -6,9 +6,6 @@ import DynamicPreset from "../../components/presets/dynamic-preset";
 
 const block = 'jet-forms/conditional-block';
 
-window.jetFormBuilderBlockCallbacks = window.jetFormBuilderBlockCallbacks || {};
-window.jetFormBuilderBlockCallbacks[ block ] = window.jetFormBuilderBlockCallbacks[ block ] || {};
-
 const { __ } = wp.i18n;
 
 const {
@@ -198,4 +195,4 @@ function ConditionalBlockEdit( {
 	];
 }
 
-window.jetFormBuilderBlockCallbacks[ block ].edit = ConditionalBlockEdit;
+export default ConditionalBlockEdit;

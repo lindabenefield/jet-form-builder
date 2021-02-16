@@ -1,7 +1,6 @@
 import JetFormToolbar from '../controls/toolbar';
 import JetFormGeneral from '../controls/general';
 import JetFormAdvanced from '../controls/advanced';
-import JetFieldPlaceholder from '../controls/placeholder';
 
 import FromTermsFields from "../../components/base-select-check-radio/from-terms-fields";
 import FromPostsFields from "../../components/base-select-check-radio/from-posts-fields";
@@ -11,40 +10,22 @@ import { SelectRadioCheckPlaceholder } from "../../components/select-radio-check
 
 const block = 'jet-forms/radio-field';
 
-window.jetFormBuilderBlockCallbacks = window.jetFormBuilderBlockCallbacks || {};
-window.jetFormBuilderBlockCallbacks[ block ] = window.jetFormBuilderBlockCallbacks[ block ] || {};
-
 const { __ } = wp.i18n;
 
 const {
-	ColorPalette,
-	RichText,
-	Editable,
-	MediaUpload,
-	ServerSideRender,
 	BlockControls,
 	InspectorControls,
 } = wp.blockEditor ? wp.blockEditor : wp.editor;
 
 const {
-	PanelColor,
-	IconButton,
 	TextControl,
-	TextareaControl,
 	SelectControl,
-	ToggleControl,
-	PanelBody,
-	RadioControl,
-	Button,
-	RangeControl,
-	CheckboxControl,
-	Disabled,
 } = wp.components;
 
 const keyControls = () => block + '-controls-edit';
 const keyGeneral = block + '-general-edit';
 
-window.jetFormBuilderBlockCallbacks[ block ].edit = class RadioEdit extends wp.element.Component {
+export default class RadioEdit extends wp.element.Component {
 
 	constructor( props ) {
 		super( props );

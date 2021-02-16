@@ -1,14 +1,10 @@
 import JetFormToolbar from '../controls/toolbar';
 import JetFormGeneral from '../controls/general';
 import JetFormAdvanced from '../controls/advanced';
-import JetFieldPlaceholder from '../controls/placeholder';
 import Tools from "../../helpers/tools";
 import FieldWrapper from '../../components/field-wrapper';
 
 const block = 'jet-forms/media-field';
-
-window.jetFormBuilderBlockCallbacks = window.jetFormBuilderBlockCallbacks || {};
-window.jetFormBuilderBlockCallbacks[ block ] = window.jetFormBuilderBlockCallbacks[ block ] || {};
 
 const { __ } = wp.i18n;
 
@@ -41,7 +37,7 @@ const keyGeneral = block + '-general-edit';
 
 const localizeData = window.jetFormMediaFieldData;
 
-window.jetFormBuilderBlockCallbacks[ block ].edit = class MediaEdit extends wp.element.Component {
+export default class MediaEdit extends wp.element.Component {
 	render() {
 		const props = this.props;
 		const attributes = props.attributes;

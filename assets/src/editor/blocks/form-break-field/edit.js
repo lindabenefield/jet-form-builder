@@ -35,7 +35,7 @@ const {
 const keyControls = block + '-controls-edit';
 const keyGeneral = block + '-general-edit';
 
-window.jetFormBuilderBlockCallbacks[ block ].edit = class FormBreakEdit extends wp.element.Component {
+export default class FormBreakEdit extends wp.element.Component {
 
 	constructor( props ) {
 		super( props );

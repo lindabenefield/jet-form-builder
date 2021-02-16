@@ -6,9 +6,6 @@ import FieldWrapper from "../../components/field-wrapper";
 
 const block = 'jet-forms/textarea-field';
 
-window.jetFormBuilderBlockCallbacks = window.jetFormBuilderBlockCallbacks || {};
-window.jetFormBuilderBlockCallbacks[ block ] = window.jetFormBuilderBlockCallbacks[ block ] || {};
-
 const { __ } = wp.i18n;
 
 const {
@@ -53,7 +50,7 @@ const keyControls = block + '-controls-edit';
 const keyPlaceHolder = block + '-placeholder-edit';
 const keyGeneral = block + '-general-edit';
 
-window.jetFormBuilderBlockCallbacks[ block ].edit = function TextareaEdit( props ) {
+export default function TextareaEdit( props ) {
 
 	const attributes = props.attributes;
 	const hasToolbar = Boolean( window.jetFormBuilderControls.toolbar[ block ] && window.jetFormBuilderControls.toolbar[ block ].length );

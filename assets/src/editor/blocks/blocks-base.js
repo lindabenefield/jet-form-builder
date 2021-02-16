@@ -1,4 +1,63 @@
-{
+import JetFormToolbar from "./controls/toolbar";
+import JetFormGeneral from "./controls/general";
+import JetFormAdvanced from "./controls/advanced";
+
+const {
+	ColorPalette,
+	RichText,
+	Editable,
+	MediaUpload,
+	ServerSideRender,
+	BlockControls,
+	InspectorControls,
+} = wp.blockEditor ? wp.blockEditor : wp.editor;
+
+export const baseBlocks = {
+	editToolbar: props => {
+		const { controls, setAttributes, attributes, clientId } = props;
+		const hasControls = Boolean( controls.toolbar && controls.toolbar.length );
+
+		return hasControls && <BlockControls
+			key={ `jet-form-toolbar-${ clientId }` }
+		>
+			<JetFormToolbar
+				values={ attributes }
+				controls={ controls.toolbar }
+				onChange={ setAttributes }
+			/>
+		</BlockControls>;
+	},
+	editGeneral: props => {
+		const { controls, setAttributes, attributes, isSelected, clientId } = props;
+		const hasControls = Boolean( controls.general && controls.general.length );
+
+		return ( isSelected && hasControls ) && <InspectorControls
+			key={ `jet-form-general-${ clientId }` }
+		>
+			<JetFormGeneral
+				key={ `jet-form-general-component-${ clientId }` }
+				values={ attributes }
+				controls={ controls.general }
+				onChange={ setAttributes }
+			/>
+		</InspectorControls>;
+	},
+	editAdvanced: props => {
+		const { controls, setAttributes, attributes, isSelected, clientId } = props;
+		const hasControls = Boolean( controls.advanced && controls.advanced.length );
+
+		return ( isSelected && hasControls ) && <InspectorControls
+			key={ `jet-form-advanced-${ clientId }` }
+		>
+			<JetFormAdvanced
+				values={ attributes }
+				key={ `jet-form-advanced-component-${ clientId }` }
+				controls={ controls.advanced }
+				onChange={ setAttributes }
+			/>
+		</InspectorControls>
+	},
+	editField: props => null,
 	"global": {
 		"label": {
 			"type": "string",

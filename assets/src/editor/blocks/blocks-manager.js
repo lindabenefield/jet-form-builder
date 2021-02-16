@@ -1,13 +1,12 @@
-const {
-	registerBlockType
-} = wp.blocks;
+import BlockInstance from "./block-instance";
+import BlocksStore from "./blocks-store";
 
 const blocks = [
+	'hidden-field',
+	'repeater-field',
 	'text-field',
 	'datetime-field',
-	'repeater-field',
 	'submit-field',
-	'hidden-field',
 	'range-field',
 	'textarea-field',
 	'heading-field',
@@ -21,118 +20,52 @@ const blocks = [
 	'select-field',
 	'form-break-field',
 	'group-break-field',
-	'conditional-block'
+	'conditional-block',
+	'calculated-field',
 ];
 
-const blockBase = require( './blocks-base.json' );
-
-const getControlsList = ( attributes, context ) => {
-	attributes = Object.entries( attributes );
-
-	const response = [];
-
-	attributes.forEach( ( [ attrName, attrValue ] ) => {
-		if ( ! attrValue[ context ] ) {
-			return;
-		}
-
-		const option = ( name, empty ) => {
-			if ( ! attrValue[ context ][ name ] ) {
-				return empty;
-			}
-			return attrValue[ context ][ name ];
-		}
-
-		response.push( {
-			key: attrName,
-			type: option( 'type' ),
-			label: option( 'label' ),
-			options: option( 'options', [] ),
-			condition: option( 'condition', false ),
-			show: option( 'show', true ),
-			help: option( 'help', '' )
-		} );
-	} );
-
-	return response;
-};
-
-function blockWrapper( additionalProps, Instance ) {
-	return function JetFormFieldWrapper( props ) {
-		return <Instance { ...props } { ...additionalProps }/>;
-	}
-}
-
-const withDataBlockWrapper = blockData => {
-	const additionalProps = {
-		controls: {
-			toolbar: getControlsList( blockBase.global, 'toolbar' ),
-			general: getControlsList( blockBase.global, 'general' ),
-			advanced: getControlsList( blockBase.global, 'advanced' )
-		},
-		localized: blockData.localizeData ? window[ blockData.localizeData ] : {}
-	};
-
-	return Instance => blockWrapper( additionalProps, Instance );
-};
-
-( () => {
-
-	let registeredBlocks = {};
+const setupBlocks = () => {
 
 	blocks.forEach( blockName => {
 		const blockData = require( `./${ blockName }/block.json` );
 
-		blockData.supports = {
-			customClassName: false,
-			html: false,
-			...( blockData.supports || {} )
-		};
-		blockData.icon = blockData.icon || 'image-filter';
-
-		const getInstance = withDataBlockWrapper( blockData );
-
 		const blockUI = {
-			edit: getInstance( require( `./${ blockName }/edit` ).default ),
-			save: require( `./${ blockName }/save` ).default
+			save: () => null,
+			edit: false,
+			editField: false,
+			editToolbar: false,
+			editGeneral: false,
+			editAdvanced: false,
 		};
 
-		registeredBlocks[ `jet-forms/${ blockName }` ] = {
-			...blockData,
-			...blockUI,
-			icon: <span dangerouslySetInnerHTML={ { __html: blockData.icon } }></span>,
-			category: 'jet-form-builder-fields',
-			className: `jet-form-${ blockName }`,
-		};
+		const partNames = [
+			[ 'edit', 'edit' ],
+			[ 'save', 'save' ],
+			[ 'view', 'view' ],
+			[ 'editField', 'edit-field' ],
+			[ 'editToolbar', 'edit-toolbar' ],
+			[ 'editGeneral', 'edit-general' ],
+			[ 'editAdvanced', 'edit-advanced' ],
+		];
+
+		partNames.forEach( ( [ uiKey, fileName ] ) => {
+			try {
+				blockUI[ uiKey ] = require( `./${ blockName }/${ fileName }` ).default;
+			} catch ( e ) {}
+		} );
+
+		BlocksStore.add(
+			new BlockInstance( blockName, { ...blockData, ...blockUI } )
+		);
 	} );
 
-	const parseAttributes = attrs => {
-		let responseAttrs = {};
+	BlocksStore.registerAll();
+};
 
-		for ( const attrsKey in attrs ) {
-			if ( registeredBlocks[ attrsKey ] && 'inherit' === attrs[ attrsKey ] ) {
-				responseAttrs = { ...registeredBlocks[ attrsKey ].attributes, ...responseAttrs };
-				continue;
-			}
-			responseAttrs[ attrsKey ] = attrs[ attrsKey ];
-		}
-
-		return responseAttrs;
-	};
-
-	Object.entries( registeredBlocks ).forEach( ( [ blockName, blockData ] ) => {
-		blockData.attributes = {
-			...parseAttributes( blockData.attributes ),
-			...( blockData.global || blockBase.global )
-		};
-
-		registerBlockType( blockName, blockData )
-	} );
-
+( () => {
+	try {
+		setupBlocks();
+	} catch ( exception ) {
+		console.error( exception );
+	}
 } )()
-
-
-
-
-
-

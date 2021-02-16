@@ -1,40 +1,21 @@
 import JetFormToolbar from '../controls/toolbar';
 import JetFormGeneral from '../controls/general';
 import JetFormAdvanced from '../controls/advanced';
-import JetFieldPlaceholder from '../controls/placeholder';
-import Tools from "../../helpers/tools";
+
 import FieldWrapper from '../../components/field-wrapper';
 
 const block = 'jet-forms/range-field';
 
-window.jetFormBuilderBlockCallbacks = window.jetFormBuilderBlockCallbacks || {};
-window.jetFormBuilderBlockCallbacks[ block ] = window.jetFormBuilderBlockCallbacks[ block ] || {};
-
 const { __ } = wp.i18n;
 
 const {
-	ColorPalette,
-	RichText,
-	Editable,
-	MediaUpload,
-	ServerSideRender,
 	BlockControls,
 	InspectorControls,
 } = wp.blockEditor ? wp.blockEditor : wp.editor;
 
 const {
-	PanelColor,
-	IconButton,
 	TextControl,
-	TextareaControl,
-	SelectControl,
-	ToggleControl,
 	PanelBody,
-	Button,
-	RangeControl,
-	CheckboxControl,
-	RadioControl,
-	Disabled,
 	__experimentalNumberControl,
 	__experimentalInputControl
 } = wp.components;
@@ -54,7 +35,7 @@ const keyPlaceHolder = block + '-placeholder-edit';
 const keyGeneral = block + '-general-edit';
 
 
-window.jetFormBuilderBlockCallbacks[ block ].edit = class RangeEdit extends wp.element.Component {
+export default class RangeEdit extends wp.element.Component {
 
 	constructor( props ) {
 		super( props );

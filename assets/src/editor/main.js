@@ -26,49 +26,10 @@ window.jetFormBuilderControls = {
 	general: {},
 	advanced: {},
 };
+import './blocks/blocks-manager';
 
 event( 'jet-form-builder-initialize' )();
 
-import './blocks/blocks-manager';
-
-/*if ( window.jetFormBuilderBlocks && window.jetFormBuilderBlocks.length ) {
-
-	window.jetFormBuilderBlocks.forEach( function ( blockData ) {
-
-		if ( window.jetFormBuilderBlockCallbacks[ blockData.blockName ] ) {
-
-			if ( blockData.controls.toolbar ) {
-				window.jetFormBuilderControls.toolbar[ blockData.blockName ] = blockData.controls.toolbar;
-			}
-
-			if ( blockData.controls.general ) {
-				window.jetFormBuilderControls.general[ blockData.blockName ] = blockData.controls.general;
-			}
-
-			if ( blockData.controls.advanced ) {
-				window.jetFormBuilderControls.advanced[ blockData.blockName ] = blockData.controls.advanced;
-			}
-
-			/!*registerBlockType( blockData.blockName, {
-				title: blockData.title,
-				icon: <span dangerouslySetInnerHTML={ { __html: blockData.icon } }></span>,
-				category: 'jet-form-builder-fields',
-				attributes: blockData.attributes,
-				className: blockData.className,
-				supports: {
-					customClassName: false,
-					html: false,
-					...blockData.supports
-				},
-				edit: window.jetFormBuilderBlockCallbacks[ blockData.blockName ].edit,
-				save: window.jetFormBuilderBlockCallbacks[ blockData.blockName ].save,
-			} );*!/
-
-		}
-
-	} );
-
-}*/
 
 window.jetFormActionTypes.forEach( function ( action, index ) {
 	if ( window.jetFormDefaultActions && window.jetFormDefaultActions[ action.id ] ) {

@@ -25,28 +25,64 @@ const {
 
 const { __ } = wp.i18n;
 
-const JetFormGeneral = class extends wp.element.Component {
+const {
+	useState,
+	useEffect,
+	useRef
+} = wp.element;
 
-	render() {
-		const result = {};
-		const onChangeValue = ( value, key ) => {
-			result[ key ] = value;
-			this.props.onChange( result );
-		};
+function JetFormGeneral( props ) {
+	const { onChange, controls, values } = props;
 
-		for ( var i = 0; i < this.props.controls.length; i ++ ) {
-			result[ this.props.controls[ i ].key ] = this.props.values[ this.props.controls[ i ].key ];
+	const [ result, setResult ] = useState( () => {
+		const response = {};
+
+		for ( let i = 0; i < controls.length; i ++ ) {
+			response[ controls[ i ].key ] = values[ controls[ i ].key ];
 		}
 
-		/* eslint-disable jsx-a11y/no-onchange */
-		return <PanelBody title={ __( 'General' ) } key={ 'test-general-key' }>
-			{ this.props.controls.map( ( data, index ) => {
-				if ( ! data.show ) {
-					return null;
-				}
-				switch ( data.type ) {
-					case 'text':
-						return <TextControl
+		return response;
+	} );
+
+	const onChangeValue = ( value, key ) => {
+		setResult( prev => ( { ...prev, [ key ]: value } ) );
+	};
+
+	useEffect( () => {
+		onChange( result );
+
+	}, [ result ] );
+
+	/* eslint-disable jsx-a11y/no-onchange */
+	return <PanelBody title={ __( 'General' ) } key={ 'test-general-key' }>
+		{ controls.map( ( data, index ) => {
+			if ( ! data.show ) {
+				return null;
+			}
+			switch ( data.type ) {
+				case 'text':
+					return <TextControl
+						key={ data.key }
+						label={ data.label }
+						help={ data.help ? data.help : '' }
+						value={ result[ data.key ] }
+						onChange={ newVal => {
+							onChangeValue( newVal, data.key )
+						} }
+					/>;
+				case 'dynamic_text':
+					return <FieldWithPreset
+						ModalEditor={ ( { actionClick, onRequestClose } ) => <DynamicPreset
+							key={ `dynamic_text_${ data.key }` }
+							value={ result[ data.key ] }
+							isSaveAction={ actionClick }
+							onSavePreset={ newVal => {
+								onChangeValue( newVal, data.key )
+							} }
+							onUnMount={ onRequestClose }
+						/> }
+					>
+						<TextControl
 							key={ data.key }
 							label={ data.label }
 							help={ data.help ? data.help : '' }
@@ -54,34 +90,12 @@ const JetFormGeneral = class extends wp.element.Component {
 							onChange={ newVal => {
 								onChangeValue( newVal, data.key )
 							} }
-						/>;
-					case 'dynamic_text':
-						return <FieldWithPreset
-							ModalEditor={ ( { actionClick, onRequestClose } ) => <DynamicPreset
-								key={ `dynamic_text_${ data.key }` }
-								value={ result[ data.key ] }
-								isSaveAction={ actionClick }
-								onSavePreset={ newVal => {
-									onChangeValue( newVal, data.key )
-								} }
-								onUnMount={ onRequestClose }
-							/> }
-						>
-							<TextControl
-								key={ data.key }
-								label={ data.label }
-								help={ data.help ? data.help : '' }
-								value={ result[ data.key ] }
-								onChange={ newVal => {
-									onChangeValue( newVal, data.key )
-								} }
-							/>
-						</FieldWithPreset>;
-				}
-			} ) }
-		</PanelBody>
-		/* eslint-enable jsx-a11y/no-onchange */
-	}
+						/>
+					</FieldWithPreset>;
+			}
+		} ) }
+	</PanelBody>
+	/* eslint-enable jsx-a11y/no-onchange */
 }
 
 saveGlobalComponent( 'JetFBComponents', { JetFormGeneral } );

@@ -11,9 +11,6 @@ import { SelectRadioCheckPlaceholder } from "../../components/select-radio-check
 
 const block = 'jet-forms/select-field';
 
-window.jetFormBuilderBlockCallbacks = window.jetFormBuilderBlockCallbacks || {};
-window.jetFormBuilderBlockCallbacks[ block ] = window.jetFormBuilderBlockCallbacks[ block ] || {};
-
 const localizeData = window.JetFormSelectFieldData;
 
 const { __ } = wp.i18n;
@@ -46,7 +43,7 @@ const keyControls = block + '-controls-edit';
 const keyPlaceHolder = block + '-placeholder-edit';
 const keyGeneral = block + '-general-edit';
 
-window.jetFormBuilderBlockCallbacks[ block ].edit = class SelectEdit extends wp.element.Component {
+export default class SelectEdit extends wp.element.Component {
 
 	constructor( props ) {
 		super( props );
