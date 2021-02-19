@@ -1,3 +1,5 @@
+import { useMetaWithEffect } from "../helpers/hooks-helper";
+
 function ArgsMeta() {
 
 	const {
@@ -25,27 +27,7 @@ function ArgsMeta() {
 	} = wp.element;
 
 	const DocumentSettingPanelArgs = () => {
-
-		const meta = useSelect( ( select ) => {
-			return select( 'core/editor' ).getEditedPostAttribute( 'meta' ) || {};
-		} );
-
-		const {
-			editPost
-		} = useDispatch( 'core/editor' );
-
-		const [ args, setArgs ] = useState( JSON.parse( meta._jf_args || '{}' ) );
-
-		useEffect( () => {
-
-			editPost( {
-				meta: ( {
-					...meta,
-					_jf_args: JSON.stringify( args )
-				} )
-			} );
-
-		} );
+		const [ args, setArgs ] = useMetaWithEffect( '_jf_args', '{}' );
 
 		return (
 			<PluginDocumentSettingPanel

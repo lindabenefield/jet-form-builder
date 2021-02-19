@@ -20,6 +20,33 @@ export const useMeta = ( key, empty ) => {
 	return [ ...useState( JSON.parse( meta[ key ] || empty ) ), meta ];
 };
 
+export const useMetaWithEffect = ( key, empty, subscriber = () => {} ) => {
+	const {
+		editPost
+	} = useDispatch( 'core/editor' );
+
+	const meta = useSelect( ( select ) => {
+		return select( 'core/editor' ).getEditedPostAttribute( 'meta' ) || {};
+	} );
+
+	const [ metaValue, setMetaValue ] = useState( JSON.parse( meta[ key ] || empty ) );
+
+	useEffect( () => {
+
+		editPost( {
+			meta: ( {
+				...meta,
+				[ key ]: JSON.stringify( metaValue )
+			} )
+		} );
+
+		subscriber( metaValue )
+
+	}, [ metaValue ] );
+
+	return [ metaValue, setMetaValue ];
+};
+
 
 export const useActions = ( withEditPostEffect = false ) => {
 	const {

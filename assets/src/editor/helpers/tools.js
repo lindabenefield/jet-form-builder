@@ -15,12 +15,11 @@ class Tools {
 		}
 	}
 
-	static getLabel( attrs ) {
+	static getLabel( attributes, args ) {
 		const label = {};
-		label.name = attrs.label;
-		const [ args ] = useFormArgs();
+		label.name = attributes.label;
 
-		if ( attrs.required ) {
+		if ( attributes.required ) {
 			label.mark = args.required_mark || '';
 		}
 		return label;

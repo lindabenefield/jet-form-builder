@@ -1,11 +1,26 @@
 import Tools from "../helpers/tools";
+import { useFormArgs, useMeta, useMetaWithEffect } from "../helpers/hooks-helper";
+
+const {
+	useEffect,
+	useState,
+} = wp.element;
+
+const {
+	useSelect,
+	subscribe,
+} = wp.data;
 
 export default function FieldWrapper( { attributes, block, children, wrapClasses = [], valueIfEmptyLabel = '' } ) {
 	const {
 		BaseControl,
 	} = wp.components;
 
-	const label = Tools.getLabel( attributes );
+	const [ label, setLabel ] = useState( {} );
+
+	useMetaWithEffect( '_jf_args', '{}', newArgs => {
+		setLabel( Tools.getLabel( attributes, newArgs ) );
+	} );
 
 	return (
 		<BaseControl key={ `place_holder_block_${ block }_label` }
